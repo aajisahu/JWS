@@ -16,8 +16,9 @@ public class JwtUtil {
     @Value("${app.secret}")
     private String secret;
 
+
     // 6. validate username in token and database, and expiration date
-    public boolean isTokenExp(String token, String username){
+    public boolean validateToken(String token, String username){
         String tokenUserName= getUserName(token);
         return (username.equals(tokenUserName) && ! isTokenExp(token));
 

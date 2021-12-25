@@ -1,6 +1,7 @@
 package com.springbootrest.config;
 
 
+import com.springbootrest.filter.SecurityFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -25,6 +27,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private InvalidUserAuthEntryPoint authenticationEntryPoint;
+
+    @Autowired
+    private SecurityFilter securityFilter;
 
     @Override
     @Bean
@@ -55,13 +60,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(authenticationEntryPoint)
                 .and()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                //Verify ser second request onwards
+                .and()
+                //Second Request onwards
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
             //Note: AuthenticationManager : (Check user name and password ) insace of session here  no session,
             //Checking should be manual
 
-        //TODO: Verifify ser second request onwards
-
-
-
     }
+
+
 }

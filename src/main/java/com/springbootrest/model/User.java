@@ -19,7 +19,7 @@ public class User {
     private String password;
 
     //One Child table will be creted
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
             name = "rolestab",
             joinColumns = @JoinColumn(name="id")
